@@ -86,3 +86,54 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		enableFloat(hrp)
 	end
 end)
+
+
+--rj
+-- LocalScript (StarterPlayerScripts)
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local TeleportService = game:GetService("TeleportService")
+local TweenService = game:GetService("TweenService")
+local StarterGui = game:GetService("StarterGui")
+
+-- Function to create screen fade
+local function createFade()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "RejoinFade"
+    screenGui.ResetOnSpawn = false
+    screenGui.Parent = player:WaitForChild("PlayerGui")
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1,0,1,0)
+    frame.BackgroundColor3 = Color3.new(0,0,0)
+    frame.BackgroundTransparency = 1 -- initially invisible
+    frame.Parent = screenGui
+
+    return frame
+end
+
+-- Fade tween function
+local function fade(frame, targetTransparency, time)
+    local tween = TweenService:Create(frame, TweenInfo.new(time), {BackgroundTransparency = targetTransparency})
+    tween:Play()
+    tween.Completed:Wait()
+end
+
+-- Rejoin function with fade
+local function rejoinGame()
+    local fadeFrame = createFade()
+    -- fade out
+    fade(fadeFrame, 0, 0.5)
+    wait(0.1)
+    -- teleport
+    TeleportService:Teleport(game.PlaceId, player)
+end
+
+-- Listen to chat
+player.Chatted:Connect(function(msg)
+    if msg:lower() == "!rj" then
+        rejoinGame()
+    end
+end)
+
