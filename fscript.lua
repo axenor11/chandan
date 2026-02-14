@@ -86,5 +86,3 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		enableFloat(hrp)
 	end
 end)
-
-
