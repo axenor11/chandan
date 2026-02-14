@@ -137,3 +137,21 @@ player.Chatted:Connect(function(msg)
     end
 end)
 
+--re
+-- LocalScript (StarterPlayerScripts)
+
+local player = game:GetService("Players").LocalPlayer
+
+-- Respawn function
+local function respawnPlayer()
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.Health = 0
+    end
+end
+
+-- Listen to chat
+player.Chatted:Connect(function(msg)
+    if msg:lower() == "!re" then
+        respawnPlayer()
+    end
+end)
