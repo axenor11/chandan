@@ -234,14 +234,14 @@ end)
 -- Toggle function
 local function updateButton()
     if showTags then
-        textBtn.Text = "tags"
+        textBtn.Text = "tags on"
         gradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 255, 60)),
             ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 180, 0))
         }
         stroke.Color = Color3.fromRGB(0, 255, 100)
     else
-        textBtn.Text = "AKU OFF"
+        textBtn.Text = "tags off"
         gradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 60, 60)),
             ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 0, 0))
