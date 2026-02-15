@@ -360,3 +360,4 @@ updateButton()
 print("✅ AKU TAG FIXED – sirf script chalane walon pe 'aku's [name]'")
 print("✅ Apne head pe hamesha 👑 OWNER")
 print("Button se ON/OFF + drag kar sakte ho")
+ 
