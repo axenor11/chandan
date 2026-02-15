@@ -155,3 +155,114 @@ player.Chatted:Connect(function(msg)
         respawnPlayer()
     end
 end)
+-- tags to spesial player
+-- SUPER CHHOTA TAG SCRIPT + HINTS
+-- 2 players ke tags: axenor11 → 👑 OWNER, fake_id002 → CO-OWNER
+-- Tag pe click → teleport
+-- >20m dur → gol shape + 👑 emoji
+-- Edit hint: players table mein naam:title daalo (e.g. players["newguy"] = "VIP")
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- ================= EDIT YAHAN =================
+local players = {
+    ["axenor11"] = {title = "👑 OWNER", color1 = Color3.fromRGB(255,180,0), color2 = Color3.fromRGB(200,100,0), stroke = Color3.fromRGB(255,220,60)},
+    ["fake_id002"] = {title = "aku bkl", color1 = Color3.fromRGB(0,140,80), color2 = Color3.fromRGB(0,200,120), stroke = Color3.fromRGB(100,255,180)}
+}
+local showTags = true  -- default ON (change true/false)
+local maxDist = 20     -- distance limit (change number)
+-- =============================================
+
+-- Tag banao function
+local function makeTag(p, char, data)
+    local head = char:WaitForChild("Head")
+    local old = head:FindFirstChild("Tag")
+    if old then old:Destroy() end
+
+    local bb = Instance.new("BillboardGui", head)
+    bb.Name = "Tag"
+    bb.Adornee = head
+    bb.Size = UDim2.new(0, 150, 0, 30)  -- size change yahan
+    bb.StudsOffset = Vector3.new(0, 2.2, 0)
+    bb.AlwaysOnTop = true
+    bb.Enabled = showTags
+
+    local f = Instance.new("Frame", bb)
+    f.Size = UDim2.new(1,0,1,0)
+    f.BackgroundTransparency = 0.4
+
+    local c = Instance.new("UICorner", f)
+    c.CornerRadius = UDim.new(0, 8)  -- normal radius
+
+    local g = Instance.new("UIGradient", f)
+    g.Color = ColorSequence.new(data.color1, data.color2)
+
+    local s = Instance.new("UIStroke", f)
+    s.Thickness = 1.5
+    s.Color = data.stroke
+
+    local btn = Instance.new("TextButton", f)
+    btn.Size = UDim2.new(1,0,1,0)
+    btn.BackgroundTransparency = 1
+    btn.Text = data.title
+    btn.TextScaled = true
+    btn.Font = Enum.Font.GothamBold
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
+
+    -- Click → teleport
+    btn.MouseButton1Click:Connect(function()
+        LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0,0,-3)  -- teleport samne (adjust -3)
+    end)
+
+    -- Distance check loop
+    RunService.Heartbeat:Connect(function()
+        if not char.Parent then return end
+        local dist = (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (LocalPlayer.Character.HumanoidRootPart.Position - char.HumanoidRootPart.Position).Magnitude) or 0
+        if dist > maxDist then
+            c.CornerRadius = UDim.new(0.5, 0)  -- gol shape
+            btn.Text = "👑"                    -- crown emoji
+            bb.Size = UDim2.new(0, 50, 0, 50)  -- gol size (hint: yahan change)
+        else
+            c.CornerRadius = UDim.new(0, 8)    -- normal
+            btn.Text = data.title
+            bb.Size = UDim2.new(0, 150, 0, 30) -- normal size
+        end
+    end)
+end
+
+-- Players setup
+local function setup(p)
+    local function onChar(char)
+        local data = players[p.Name]
+        if data then makeTag(p, char, data) end
+    end
+    if p.Character then onChar(p.Character) end
+    p.CharacterAdded:Connect(onChar)
+end
+
+for _, p in ipairs(Players:GetPlayers()) do setup(p) end
+Players.PlayerAdded:Connect(setup)
+
+-- Chhota ON/OFF button
+local sg = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
+local btn = Instance.new("TextButton", sg)
+btn.Size = UDim2.new(0, 70, 0, 28)
+btn.Position = UDim2.new(1, -80, 0, 5)
+btn.Text = showTags and "ON" or "OFF"
+btn.BackgroundColor3 = showTags and Color3.fromRGB(40,140,40) or Color3.fromRGB(140,40,40)
+btn.TextColor3 = Color3.fromRGB(255,255,255)
+
+btn.MouseButton1Click:Connect(function()
+    showTags = not showTags
+    btn.Text = showTags and "ON" or "OFF"
+    btn.BackgroundColor3 = showTags and Color3.fromRGB(40,140,40) or Color3.fromRGB(140,40,40)
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p.Character and p.Character.Head:FindFirstChild("Tag") then
+            p.Character.Head.Tag.Enabled = showTags
+        end
+    end
+end)
+
+print("Chhota script loaded! Edit hints upar dekh lo.")
