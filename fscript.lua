@@ -158,8 +158,8 @@ end)
 -- tags to spesial player
 -- SUPER CHHOTA TAG SCRIPT + HINTS
 -- 2 players ke tags: axenor11 → 👑 OWNER, fake_id002 → CO-OWNER
--- Tag pe click → teleport
--- >20m dur → gol shape + 👑 emoji
+-- >20 dur → tag "👑" me badal jaye
+-- Sare tags bahut chhote + achha design
 -- Edit hint: players table mein naam:title daalo (e.g. players["newguy"] = "VIP")
 
 local Players = game:GetService("Players")
@@ -171,8 +171,8 @@ local players = {
     ["axenor11"] = {title = "👑 OWNER", color1 = Color3.fromRGB(255,180,0), color2 = Color3.fromRGB(200,100,0), stroke = Color3.fromRGB(255,220,60)},
     ["fake_id002"] = {title = "CO-OWNER", color1 = Color3.fromRGB(0,140,80), color2 = Color3.fromRGB(0,200,120), stroke = Color3.fromRGB(100,255,180)}
 }
-local showTags = true  -- default ON (change true/false)
-local maxDist = 20     -- distance limit (change number)
+local showTags = true  -- default ON
+local maxDist = 20     -- distance limit
 -- =============================================
 
 -- Tag banao function
@@ -184,50 +184,46 @@ local function makeTag(p, char, data)
     local bb = Instance.new("BillboardGui", head)
     bb.Name = "Tag"
     bb.Adornee = head
-    bb.Size = UDim2.new(0, 150, 0, 30)  -- size change yahan
-    bb.StudsOffset = Vector3.new(0, 2.2, 0)
+    bb.Size = UDim2.new(0, 100, 0, 25)  -- bahut chhota size (hint: yahan badlo)
+    bb.StudsOffset = Vector3.new(0, 2, 0)
     bb.AlwaysOnTop = true
     bb.Enabled = showTags
 
     local f = Instance.new("Frame", bb)
     f.Size = UDim2.new(1,0,1,0)
-    f.BackgroundTransparency = 0.4
+    f.BackgroundTransparency = 0.3
 
     local c = Instance.new("UICorner", f)
-    c.CornerRadius = UDim.new(0, 8)  -- normal radius
+    c.CornerRadius = UDim.new(0, 6)  -- chhota radius achhe design ke liye
 
     local g = Instance.new("UIGradient", f)
     g.Color = ColorSequence.new(data.color1, data.color2)
 
     local s = Instance.new("UIStroke", f)
-    s.Thickness = 1.5
+    s.Thickness = 1.2
     s.Color = data.stroke
 
-    local btn = Instance.new("TextButton", f)
-    btn.Size = UDim2.new(1,0,1,0)
-    btn.BackgroundTransparency = 1
-    btn.Text = data.title
-    btn.TextScaled = true
-    btn.Font = Enum.Font.GothamBold
-    btn.TextColor3 = Color3.fromRGB(255,255,255)
+    local txt = Instance.new("TextLabel", f)
+    txt.Size = UDim2.new(1,-8,1,0)
+    txt.Position = UDim2.new(0,4,0,0)
+    txt.BackgroundTransparency = 1
+    txt.Text = data.title
+    txt.TextScaled = true
+    txt.Font = Enum.Font.GothamBold
+    txt.TextColor3 = Color3.fromRGB(255,255,255)
 
-    -- Click → teleport
-    btn.MouseButton1Click:Connect(function()
-        LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0,0,-3)  -- teleport samne (adjust -3)
-    end)
-
-    -- Distance check loop
+    -- Distance check
     RunService.Heartbeat:Connect(function()
         if not char.Parent then return end
         local dist = (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (LocalPlayer.Character.HumanoidRootPart.Position - char.HumanoidRootPart.Position).Magnitude) or 0
         if dist > maxDist then
-            c.CornerRadius = UDim.new(0.5, 0)  -- gol shape
-            btn.Text = "👑"                    -- crown emoji
-            bb.Size = UDim2.new(0, 50, 0, 50)  -- gol size (hint: yahan change)
+            txt.Text = "👑"                   -- crown me badlo
+            bb.Size = UDim2.new(0, 40, 0, 40)  -- chhota gol (hint: size adjust)
+            c.CornerRadius = UDim.new(0.5, 0) -- gol shape
         else
-            c.CornerRadius = UDim.new(0, 8)    -- normal
-            btn.Text = data.title
-            bb.Size = UDim2.new(0, 150, 0, 30) -- normal size
+            txt.Text = data.title
+            bb.Size = UDim2.new(0, 100, 0, 25)
+            c.CornerRadius = UDim.new(0, 6)
         end
     end)
 end
@@ -248,8 +244,8 @@ Players.PlayerAdded:Connect(setup)
 -- Chhota ON/OFF button
 local sg = Instance.new("ScreenGui", Players.LocalPlayer:WaitForChild("PlayerGui"))
 local btn = Instance.new("TextButton", sg)
-btn.Size = UDim2.new(0, 70, 0, 28)
-btn.Position = UDim2.new(1, -80, 0, 5)
+btn.Size = UDim2.new(0, 60, 0, 24)
+btn.Position = UDim2.new(1, -70, 0, 5)
 btn.Text = showTags and "ON" or "OFF"
 btn.BackgroundColor3 = showTags and Color3.fromRGB(40,140,40) or Color3.fromRGB(140,40,40)
 btn.TextColor3 = Color3.fromRGB(255,255,255)
@@ -265,4 +261,4 @@ btn.MouseButton1Click:Connect(function()
     end
 end)
 
-print("Chhota script loaded! Edit hints upar dekh lo.")
+print("Firse banaya! Ab 20+ dur → 👑, tags bahut chhote, design achha. Edit hints upar.")
