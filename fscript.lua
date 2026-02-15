@@ -171,7 +171,7 @@ local Workspace = game:GetService("Workspace")
 -- ================= EDIT YAHAN =================
 local players = {
     ["axenor11"] = {title = "👑 OWNER", color1 = Color3.fromRGB(255,180,0), color2 = Color3.fromRGB(200,100,0), stroke = Color3.fromRGB(255,220,60)},
-    ["fake_id002"] = {title = "CO-OWNER", color1 = Color3.fromRGB(0,140,80), color2 = Color3.fromRGB(0,200,120), stroke = Color3.fromRGB(100,255,180)}
+    ["fake_id002"] = {title = "aku bkl", color1 = Color3.fromRGB(0,140,80), color2 = Color3.fromRGB(0,200,120), stroke = Color3.fromRGB(100,255,180)}
 }
 local showTags = true  -- default ON
 local maxDist = 50     -- ab 50 meter (pehle 20 tha, ab badal diya)
