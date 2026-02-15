@@ -7,7 +7,7 @@ local mouse = player:GetMouse()
 
 local MAX_DISTANCE = 400
 local LIMITED_TELEPORT = 50
-local CLOSE_OBJECT_DISTANCE = 8
+local CLOSE_OBJECT_DISTANCE = 15
 
 local floatForce
 local velocityFixConnection
