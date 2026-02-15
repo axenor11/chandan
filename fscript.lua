@@ -158,13 +158,15 @@ end)
 -- tags to spesial player
 -- SUPER CHHOTA TAG SCRIPT + HINTS
 -- 2 players ke tags: axenor11 → 👑 OWNER, fake_id002 → CO-OWNER
--- >20 dur → tag "👑" me badal jaye
--- Sare tags bahut chhote + achha design
+-- >50 dur (CAMERA se) → tag "👑" me badal jaye
+-- Tags pe click → teleport
+-- Tags bahut chhote + achha design
 -- Edit hint: players table mein naam:title daalo (e.g. players["newguy"] = "VIP")
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
 
 -- ================= EDIT YAHAN =================
 local players = {
@@ -172,7 +174,7 @@ local players = {
     ["fake_id002"] = {title = "CO-OWNER", color1 = Color3.fromRGB(0,140,80), color2 = Color3.fromRGB(0,200,120), stroke = Color3.fromRGB(100,255,180)}
 }
 local showTags = true  -- default ON
-local maxDist = 20     -- distance limit
+local maxDist = 50     -- ab 50 meter (pehle 20 tha, ab badal diya)
 -- =============================================
 
 -- Tag banao function
@@ -203,25 +205,33 @@ local function makeTag(p, char, data)
     s.Thickness = 1.2
     s.Color = data.stroke
 
-    local txt = Instance.new("TextLabel", f)
-    txt.Size = UDim2.new(1,-8,1,0)
-    txt.Position = UDim2.new(0,4,0,0)
-    txt.BackgroundTransparency = 1
-    txt.Text = data.title
-    txt.TextScaled = true
-    txt.Font = Enum.Font.GothamBold
-    txt.TextColor3 = Color3.fromRGB(255,255,255)
+    local btn = Instance.new("TextButton", f)
+    btn.Size = UDim2.new(1,0,1,0)
+    btn.BackgroundTransparency = 1
+    btn.Text = data.title
+    btn.TextScaled = true
+    btn.Font = Enum.Font.GothamBold
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
 
-    -- Distance check
+    -- Click → teleport
+    btn.MouseButton1Click:Connect(function()
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            LocalPlayer.Character.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0,0,-3)  -- teleport samne (hint: -3 adjust)
+        end
+    end)
+
+    -- Distance check (CAMERA se)
     RunService.Heartbeat:Connect(function()
         if not char.Parent then return end
-        local dist = (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (LocalPlayer.Character.HumanoidRootPart.Position - char.HumanoidRootPart.Position).Magnitude) or 0
+        local camPos = Workspace.CurrentCamera.CFrame.Position
+        local headPos = head.Position
+        local dist = (camPos - headPos).Magnitude  -- camera se distance
         if dist > maxDist then
-            txt.Text = "👑"                   -- crown me badlo
+            btn.Text = "👑"                   -- crown me badlo
             bb.Size = UDim2.new(0, 40, 0, 40)  -- chhota gol (hint: size adjust)
             c.CornerRadius = UDim.new(0.5, 0) -- gol shape
         else
-            txt.Text = data.title
+            btn.Text = data.title
             bb.Size = UDim2.new(0, 100, 0, 25)
             c.CornerRadius = UDim.new(0, 6)
         end
@@ -261,4 +271,4 @@ btn.MouseButton1Click:Connect(function()
     end
 end)
 
-print("Firse banaya! Ab 20+ dur → 👑, tags bahut chhote, design achha. Edit hints upar.")
+print("Ab max distance 50 meter kar diya! 50+ dur → 👑, click pe teleport. Test karo.")
