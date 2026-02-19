@@ -271,4 +271,12 @@ btn.MouseButton1Click:Connect(function()
     end
 end)
 
-print("Ab max distance 50 meter kar diya! 50+ dur → 👑, click pe teleport. Test karo.")
+print("Ab max distance 50 meter kar diya! 50+ dur → 👑, click pe teleport. Test karo.") 
+
+-- camera
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+player.CameraMaxZoomDistance = 1000
+player.CameraMinZoomDistance = 0.5
+
